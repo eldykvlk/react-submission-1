@@ -10,7 +10,7 @@ class NoteApp extends React.Component {
 
         this.state = {
             notes: getInitialData(),
-            searchKeyword: "", 
+            searchKeyword: "",
         };
 
         this.addNote = this.addNote.bind(this);
@@ -19,11 +19,13 @@ class NoteApp extends React.Component {
         this.handleSearch = this.handleSearch.bind(this);
     }
 
+   
     addNote(newNote) {
         this.setState((prevState) => ({
             notes: [...prevState.notes, newNote],
         }));
     }
+
 
     deleteNote(id) {
         this.setState((prevState) => ({
@@ -31,15 +33,16 @@ class NoteApp extends React.Component {
         }));
     }
 
+  
     toggleArchive(id) {
         this.setState((prevState) => ({
             notes: prevState.notes.map((note) =>
-                note.id === id ? { ...note, isArchived: !note.isArchived } : note
+                note.id === id ? { ...note, archived: !note.archived } : note
             ),
         }));
     }
-    
 
+    
     handleSearch(event) {
         this.setState({ searchKeyword: event.target.value });
     }
@@ -47,21 +50,25 @@ class NoteApp extends React.Component {
     render() {
         const { notes, searchKeyword } = this.state;
 
+     
         const filteredNotes = notes.filter((note) =>
             note.title.toLowerCase().includes(searchKeyword.toLowerCase())
         );
 
-     
-        const activeNotes = filteredNotes.filter((note) => !note.isArchived);
-        const archivedNotes = filteredNotes.filter((note) => note.isArchived);
+   
+        const activeNotes = filteredNotes.filter((note) => !note.archived);
+        const archivedNotes = filteredNotes.filter((note) => note.archived);
 
         return (
             <div className="note-app__container">
                 <h1 className="note-app__title">Aplikasi Catatan</h1>
+                
+               
                 <h2 className="note-app__subtitle">Cari Catatan</h2>
                 <SearchBar searchKeyword={searchKeyword} onSearch={this.handleSearch} />
 
                 <div className="note-app__content">
+                
                     <h2 className="note-app__subtitle">Tambah Catatan</h2>
                     <NoteForm onAddNote={this.addNote} />
 
@@ -72,6 +79,7 @@ class NoteApp extends React.Component {
                         onArchive={this.toggleArchive}
                     />
 
+       
                     <h2 className="note-app__subtitle">Catatan Arsip</h2>
                     <NoteList
                         notes={archivedNotes}

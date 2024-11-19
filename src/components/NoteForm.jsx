@@ -26,18 +26,20 @@ class NoteForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-
+    
         const newNote = {
             id: +new Date(),
             title: this.state.title,
             body: this.state.body,
-            createdAt: new Date().toLocaleString(),
+            archived: false, 
+            createdAt: new Date().toISOString(),
         };
-
+    
         this.props.onAddNote(newNote);
-
+    
         this.setState({ title: "", body: "" });
     }
+    
 
     render() {
         return (
